@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { 
   Upload, Camera, Ruler, Weight, ArrowRight, 
   User, Palette, CheckCircle, XCircle, Lightbulb,
-  RefreshCw, ChevronLeft
+  RefreshCw, ChevronLeft, Scissors
 } from 'lucide-react';
 
 // 분석 결과 타입 정의
@@ -12,10 +12,12 @@ interface AnalysisReport {
   styles: string[];
   avoid: string[];
   tips: string[];
+  hairImageUrl?: string;
 }
 
 export default function App() {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -25,6 +27,7 @@ export default function App() {
 
   const processFile = (file: File) => {
     if (file.type.startsWith('image/')) {
+      setPhotoFile(file);
       setPhotoUrl(URL.createObjectURL(file));
     } else {
       alert("이미지 파일만 업로드 가능합니다.");
@@ -66,14 +69,16 @@ export default function App() {
     setIsAnalyzing(true);
 
     try {
+      const formData = new FormData();
+      formData.append('height', height);
+      formData.append('weight', weight);
+      if (photoFile) {
+        formData.append('image', photoFile);
+      }
+
       const response = await fetch('/api/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          height, 
-          weight,
-          photoDescription: photoUrl ? "사용자가 전신 사진을 업로드함" : "" 
-        }),
+        body: formData, // JSON 대신 FormData 전송
       });
 
       if (!response.ok) throw new Error('분석에 실패했습니다.');
@@ -91,6 +96,7 @@ export default function App() {
   const reset = () => {
     setReport(null);
     setPhotoUrl(null);
+    setPhotoFile(null);
     setHeight('');
     setWeight('');
   };
@@ -105,7 +111,7 @@ export default function App() {
           </div>
         </div>
         <h2 className="mt-8 text-xl font-bold text-gray-800">스타일 분석 중...</h2>
-        <p className="mt-2 text-gray-500 text-center">AI가 신체 비율과 컬러 밸런스를 <br/>정밀하게 계산하고 있습니다.</p>
+        <p className="mt-2 text-gray-500 text-center">AI가 신체 비율과 컬러 밸런스, <br/>어울리는 헤어스타일을 생성하고 있습니다.</p>
       </div>
     );
   }
@@ -125,10 +131,27 @@ export default function App() {
             <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white">
               <span className="bg-blue-400/30 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">Analysis Report</span>
               <h1 className="text-3xl font-extrabold mt-4">나의 스타일 분석 리포트</h1>
-              <p className="text-blue-100 mt-2 opacity-90">당신을 위한 맞춤형 패션 가이드라인입니다.</p>
+              <p className="text-blue-100 mt-2 opacity-90">당신을 위한 맞춤형 패션 & 헤어 가이드라인입니다.</p>
             </div>
 
             <div className="p-8 space-y-10">
+              {/* 추천 헤어스타일 (이미지) */}
+              {report.hairImageUrl && (
+                <section className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+                  <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
+                    <Scissors className="text-indigo-600" size={22} /> AI 헤어스타일 추천 (3x3)
+                  </h3>
+                  <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-inner border border-gray-200">
+                    <img 
+                      src={report.hairImageUrl} 
+                      alt="Recommended Hairstyles Grid" 
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-gray-400 text-center">* 사용자의 얼굴 정보를 유지하며 생성된 9가지 헤어스타일 예시입니다.</p>
+                </section>
+              )}
+
               {/* 체형 분석 */}
               <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
