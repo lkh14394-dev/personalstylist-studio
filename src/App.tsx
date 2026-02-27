@@ -20,14 +20,39 @@ export default function App() {
   const [weight, setWeight] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [report, setReport] = useState<AnalysisReport | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const processFile = (file: File) => {
+    if (file.type.startsWith('image/')) {
+      setPhotoUrl(URL.createObjectURL(file));
+    } else {
+      alert("이미지 파일만 업로드 가능합니다.");
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      if (file.type.startsWith('image/')) {
-        setPhotoUrl(URL.createObjectURL(file));
-      }
+      processFile(e.target.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFile(e.dataTransfer.files[0]);
     }
   };
 
@@ -193,8 +218,15 @@ export default function App() {
               전신 사진 업로드 (선택사항)
             </label>
             <div 
-              className="border-2 border-dashed border-gray-200 rounded-2xl p-4 text-center cursor-pointer hover:bg-gray-50 hover:border-blue-400 transition-all group"
+              className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer transition-all group ${
+                isDragging 
+                  ? "border-blue-500 bg-blue-50 scale-[1.02]" 
+                  : "border-gray-200 hover:bg-gray-50 hover:border-blue-400"
+              }`}
               onClick={() => fileInputRef.current?.click()}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
             >
               <input 
                 type="file" 
@@ -213,12 +245,16 @@ export default function App() {
                   </div>
                 </div>
               ) : (
-                <div className="py-10 flex flex-col items-center justify-center text-gray-400">
-                  <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="py-10 flex flex-col items-center justify-center">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all ${
+                    isDragging ? "bg-blue-500 text-white scale-110" : "bg-blue-50 text-blue-500 group-hover:scale-110"
+                  }`}>
                     <Upload size={32} />
                   </div>
-                  <p className="text-base font-bold text-gray-700">사진을 업로드하세요</p>
-                  <p className="text-xs mt-2">정면 전신 사진이 가장 정확합니다</p>
+                  <p className="text-base font-bold text-gray-700">
+                    {isDragging ? "여기에 놓으세요!" : "사진을 업로드하거나 드래그하세요"}
+                  </p>
+                  <p className="text-xs mt-2 text-gray-400">정면 전신 사진이 가장 정확합니다</p>
                 </div>
               )}
             </div>
