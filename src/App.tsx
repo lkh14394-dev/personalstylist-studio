@@ -2,7 +2,9 @@ import { useState, useRef } from 'react';
 import { 
   Upload, Camera, Ruler, Weight, ArrowRight, 
   User, Palette, CheckCircle, XCircle, Lightbulb,
-  RefreshCw, ChevronLeft, Scissors
+  RefreshCw, ChevronLeft, Scissors, Home, Layout, 
+  Camera as CameraIcon, ShoppingBag, User as UserIcon,
+  Menu, Zap
 } from 'lucide-react';
 
 // 분석 결과 타입 정의
@@ -15,12 +17,14 @@ interface AnalysisReport {
   hairImageUrl?: string;
 }
 
+type ViewState = 'landing' | 'form' | 'analyzing' | 'report';
+
 export default function App() {
+  const [view, setView] = useState<ViewState>('landing');
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [report, setReport] = useState<AnalysisReport | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +70,7 @@ export default function App() {
       return;
     }
 
-    setIsAnalyzing(true);
+    setView('analyzing');
 
     try {
       const formData = new FormData();
@@ -88,11 +92,11 @@ export default function App() {
       }
 
       setReport(result);
+      setView('report');
     } catch (error: any) {
       console.error(error);
       alert(`분석 오류: ${error.message}`);
-    } finally {
-      setIsAnalyzing(false);
+      setView('form');
     }
   };
 
@@ -102,231 +106,271 @@ export default function App() {
     setPhotoFile(null);
     setHeight('');
     setWeight('');
+    setView('landing');
   };
 
-  if (isAnalyzing) {
+  // --- UI Components ---
+
+  const Header = () => (
+    <header className="flex items-center bg-[#191022] p-4 justify-between sticky top-0 z-50 border-b border-purple-500/10">
+      <div className="text-[#7f13ec] flex size-10 shrink-0 items-center justify-center">
+        <Menu size={24} />
+      </div>
+      <h2 className="text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">AI Stylist</h2>
+      <div className="flex w-10 items-center justify-end">
+        <button className="flex cursor-pointer items-center justify-center rounded-full size-10 bg-[#7f13ec]/10 text-[#7f13ec]">
+          <UserIcon size={20} />
+        </button>
+      </div>
+    </header>
+  );
+
+  const BottomNav = () => (
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#191022]/80 backdrop-blur-lg border-t border-purple-500/10 px-6 py-2 pb-6 z-50">
+      <div className="flex justify-between items-center max-w-lg mx-auto">
+        <button onClick={() => setView('landing')} className={`flex flex-col items-center gap-1 ${view === 'landing' ? 'text-[#7f13ec]' : 'text-slate-500'}`}>
+          <Home size={24} fill={view === 'landing' ? 'currentColor' : 'none'} />
+          <span className="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-slate-500">
+          <Layout size={24} />
+          <span className="text-[10px] font-bold uppercase tracking-tighter">Looks</span>
+        </button>
+        <button onClick={() => setView('form')} className={`flex flex-col items-center gap-1 ${view === 'form' || view === 'report' ? 'text-[#7f13ec]' : 'text-slate-500'}`}>
+          <CameraIcon size={24} fill={view === 'form' || view === 'report' ? 'currentColor' : 'none'} />
+          <span className="text-[10px] font-bold uppercase tracking-tighter">Scan</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-slate-500">
+          <ShoppingBag size={24} />
+          <span className="text-[10px] font-bold uppercase tracking-tighter">Shop</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-slate-500">
+          <UserIcon size={24} />
+          <span className="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+        </button>
+      </div>
+    </nav>
+  );
+
+  if (view === 'landing') {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
-        <div className="relative">
-          <div className="w-24 h-24 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <User className="text-blue-600 animate-pulse" size={32} />
-          </div>
-        </div>
-        <h2 className="mt-8 text-xl font-bold text-gray-800">스타일 분석 중...</h2>
-        <p className="mt-2 text-gray-500 text-center">AI가 신체 비율과 컬러 밸런스, <br/>어울리는 헤어스타일을 생성하고 있습니다.</p>
+      <div className="bg-[#191022] text-slate-100 min-h-screen flex flex-col font-sans pb-24">
+        <Header />
+        <main className="flex-1 overflow-y-auto">
+          {/* Hero Section */}
+          <section className="px-4 py-8 flex flex-col gap-8 md:flex-row md:items-center md:px-12 md:py-16">
+            <div className="w-full md:w-1/2 aspect-[4/5] bg-cover bg-center rounded-2xl shadow-2xl shadow-purple-500/20" 
+                 style={{backgroundImage: 'url("https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop")'}}>
+            </div>
+            <div className="flex flex-col gap-6 md:w-1/2">
+              <div className="flex flex-col gap-3">
+                <span className="text-[#7f13ec] font-bold tracking-widest text-xs uppercase">Curated by Intelligence</span>
+                <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.1] tracking-tight">
+                  Your AI Personal <span className="text-[#7f13ec]">Stylist</span>
+                </h1>
+                <p className="text-slate-400 text-lg leading-relaxed max-w-md">
+                  Elevate your wardrobe with personalized body analysis and style recommendations tailored just for your silhouette.
+                </p>
+              </div>
+              <button 
+                onClick={() => setView('form')}
+                className="flex w-full md:w-max cursor-pointer items-center justify-center rounded-full h-16 px-10 bg-[#7f13ec] text-white text-lg font-bold shadow-lg shadow-purple-500/30 active:scale-95 transition-all"
+              >
+                Get Started
+              </button>
+            </div>
+          </section>
+
+          {/* The Experience */}
+          <section className="px-4 py-12 md:px-12">
+            <div className="flex flex-col gap-2 mb-10">
+              <h2 className="text-2xl font-bold">The Experience</h2>
+              <p className="text-slate-500 text-sm">Three steps to your perfect look</p>
+            </div>
+            <div className="space-y-0 relative">
+              {[
+                { icon: <Ruler size={20} />, title: "Input Body Data", desc: "Simply enter your height and weight for accurate base measurements." },
+                { icon: <CameraIcon size={20} />, title: "Upload Photo", desc: "Provide a full-body photo to let our AI analyze your unique proportions." },
+                { icon: <Zap size={20} className="fill-white" />, title: "Get AI Styling", desc: "Receive instant, curated fashion guides designed specifically for you.", highlight: true }
+              ].map((step, i, arr) => (
+                <div key={i} className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className={`size-10 rounded-full flex items-center justify-center z-10 border ${
+                      step.highlight ? "bg-[#7f13ec] text-white border-[#7f13ec] shadow-md shadow-purple-500/40" : "bg-[#7f13ec]/10 text-[#7f13ec] border-purple-500/20"
+                    }`}>
+                      {step.icon}
+                    </div>
+                    {i !== arr.length - 1 && <div className="w-[2px] bg-purple-500/10 flex-1 min-h-[40px]"></div>}
+                  </div>
+                  <div className={`pb-10 pt-1`}>
+                    <h3 className="text-lg font-bold">{step.title}</h3>
+                    <p className="text-slate-500 text-sm mt-1 leading-relaxed max-w-xs">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </main>
+        <BottomNav />
       </div>
     );
   }
 
-  if (report) {
+  if (view === 'form') {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
-        <div className="max-w-2xl mx-auto">
-          <button 
-            onClick={reset}
-            className="mb-6 flex items-center text-gray-500 hover:text-gray-800 transition-colors font-medium"
-          >
-            <ChevronLeft size={20} /> 다시 입력하기
-          </button>
-
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-8 text-white">
-              <span className="bg-blue-400/30 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">Analysis Report</span>
-              <h1 className="text-3xl font-extrabold mt-4">나의 스타일 분석 리포트</h1>
-              <p className="text-blue-100 mt-2 opacity-90">당신을 위한 맞춤형 패션 & 헤어 가이드라인입니다.</p>
+      <div className="bg-[#191022] text-slate-100 min-h-screen flex flex-col font-sans pb-24">
+        <Header />
+        <main className="flex-1 p-4 md:p-12 flex flex-col items-center justify-center">
+          <div className="max-w-md w-full bg-white/5 rounded-3xl shadow-2xl overflow-hidden border border-purple-500/10">
+            <div className="bg-[#7f13ec] p-10 text-white text-center">
+              <h1 className="text-2xl font-extrabold mb-2 tracking-tight">Style Analysis</h1>
+              <p className="text-purple-100 font-medium text-sm opacity-90">당신의 신체 데이터와 사진을 분석합니다.</p>
             </div>
 
-            <div className="p-8 space-y-10">
-              {/* 추천 헤어스타일 (이미지) */}
+            <form onSubmit={handleSubmit} className="p-8 space-y-8">
+              <div>
+                <label className="block text-sm font-bold text-slate-300 mb-3 uppercase tracking-wider">Photo Upload</label>
+                <div 
+                  className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer transition-all group ${
+                    isDragging ? "border-[#7f13ec] bg-[#7f13ec]/10 scale-[1.02]" : "border-white/10 hover:bg-white/5 hover:border-[#7f13ec]"
+                  }`}
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
+                  {photoUrl ? (
+                    <div className="relative h-64 w-full">
+                      <img src={photoUrl} alt="Preview" className="h-full w-full object-contain rounded-xl" />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
+                        <span className="text-white font-semibold flex items-center gap-2"><Camera size={20}/> 사진 변경</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="py-10 flex flex-col items-center justify-center">
+                      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all ${isDragging ? "bg-[#7f13ec] text-white" : "bg-[#7f13ec]/10 text-[#7f13ec]"}`}>
+                        <Upload size={32} />
+                      </div>
+                      <p className="text-base font-bold text-slate-300">Drag or click to upload</p>
+                      <p className="text-xs mt-2 text-slate-500 font-medium">전신 사진이 가장 좋습니다.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className="flex items-center gap-1.5 text-sm font-bold text-slate-300 mb-2 uppercase tracking-wider">Height (cm)</label>
+                  <input type="number" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="185" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-[#7f13ec] font-bold text-lg transition-all" required />
+                </div>
+                <div>
+                  <label className="flex items-center gap-1.5 text-sm font-bold text-slate-300 mb-2 uppercase tracking-wider">Weight (kg)</label>
+                  <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder="80" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-[#7f13ec] font-bold text-lg transition-all" required />
+                </div>
+              </div>
+
+              <button type="submit" className="w-full bg-[#7f13ec] hover:bg-purple-700 active:scale-[0.98] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-purple-500/20 text-lg">
+                분석 시작하기 <ArrowRight size={20} />
+              </button>
+            </form>
+          </div>
+        </main>
+        <BottomNav />
+      </div>
+    );
+  }
+
+  if (view === 'analyzing') {
+    return (
+      <div className="min-h-screen bg-[#191022] flex flex-col items-center justify-center p-4">
+        <div className="relative">
+          <div className="w-24 h-24 border-4 border-purple-500/10 border-t-[#7f13ec] rounded-full animate-spin"></div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Zap className="text-[#7f13ec] animate-pulse" size={32} fill="currentColor" />
+          </div>
+        </div>
+        <h2 className="mt-8 text-2xl font-bold text-white">AI Analyzing...</h2>
+        <p className="mt-2 text-slate-500 text-center font-medium">당신의 유니크한 스타일을 <br/>찾아내고 있습니다.</p>
+      </div>
+    );
+  }
+
+  if (view === 'report' && report) {
+    return (
+      <div className="bg-[#191022] text-slate-100 min-h-screen flex flex-col font-sans pb-24">
+        <Header />
+        <main className="flex-1 p-4 md:p-12 max-w-3xl mx-auto w-full">
+          <button 
+            onClick={() => setView('form')}
+            className="mb-6 flex items-center text-slate-500 hover:text-white transition-colors font-bold uppercase tracking-tighter text-xs"
+          >
+            <ChevronLeft size={18} /> Back to scan
+          </button>
+
+          <div className="bg-white/5 rounded-[2rem] shadow-2xl overflow-hidden border border-purple-500/10">
+            <div className="bg-gradient-to-r from-[#7f13ec] to-[#4c0b8e] p-10 text-white">
+              <span className="bg-white/20 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">Analysis Complete</span>
+              <h1 className="text-3xl font-black mt-4 tracking-tight">Style Analysis Report</h1>
+            </div>
+
+            <div className="p-8 space-y-12">
               {report.hairImageUrl && (
-                <section className="animate-in fade-in slide-in-from-bottom-4 duration-300">
-                  <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
-                    <Scissors className="text-indigo-600" size={22} /> AI 헤어스타일 추천 (3x3)
+                <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-6 uppercase tracking-wider">
+                    <Scissors className="text-indigo-500" size={22} /> Recommended Hair
                   </h3>
-                  <div className="bg-gray-100 rounded-2xl overflow-hidden shadow-inner border border-gray-200">
-                    <img 
-                      src={report.hairImageUrl} 
-                      alt="Recommended Hairstyles Grid" 
-                      className="w-full h-auto"
-                    />
+                  <div className="bg-black/40 rounded-3xl overflow-hidden border border-white/5 p-1 shadow-inner">
+                    <img src={report.hairImageUrl} alt="Hairstyle Grid" className="w-full h-auto rounded-2xl" />
                   </div>
-                  <p className="mt-2 text-xs text-gray-400 text-center">* 사용자의 얼굴 정보를 유지하며 생성된 9가지 헤어스타일 예시입니다.</p>
                 </section>
               )}
 
-              {/* 체형 분석 */}
-              <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
-                  <User className="text-blue-600" size={22} /> 1. 체형 분석
+              <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-4 uppercase tracking-wider">
+                  <User className="text-[#7f13ec]" size={22} /> 1. Body Analysis
                 </h3>
-                <div className="bg-blue-50 rounded-2xl p-5 text-gray-700 leading-relaxed border border-blue-100">
+                <div className="bg-[#7f13ec]/5 rounded-2xl p-6 text-slate-300 leading-relaxed border border-purple-500/10">
                   {report.body}
                 </div>
               </section>
 
-              {/* 퍼스널 컬러 */}
-              <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
-                  <Palette className="text-pink-500" size={22} /> 2. 퍼스널 컬러
+              <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-4 uppercase tracking-wider">
+                  <Palette className="text-pink-500" size={22} /> 2. Personal Color
                 </h3>
-                <div className="bg-pink-50 rounded-2xl p-5 text-gray-700 leading-relaxed border border-pink-100">
+                <div className="bg-pink-500/5 rounded-2xl p-6 text-slate-300 leading-relaxed border border-pink-500/10">
                   {report.color}
                 </div>
               </section>
 
-              {/* 추천 스타일 */}
               <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
-                  <CheckCircle className="text-green-500" size={22} /> 3. 추천 아이템
+                <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-6 uppercase tracking-wider">
+                  <CheckCircle className="text-green-500" size={22} /> 3. Must-have Items
                 </h3>
-                <div className="grid gap-3">
+                <div className="grid gap-4">
                   {report.styles.map((s, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl border border-gray-200">
-                      <span className="bg-green-100 text-green-600 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5">{i+1}</span>
-                      <span className="text-gray-700 font-medium">{s}</span>
+                    <div key={i} className="flex items-start gap-4 bg-white/5 p-5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors">
+                      <span className="bg-green-500/20 text-green-500 font-black text-xs size-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">{i+1}</span>
+                      <span className="text-slate-200 font-medium">{s}</span>
                     </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* 피해야 할 스타일 */}
-              <section>
-                <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
-                  <XCircle className="text-red-500" size={22} /> 4. 피해야 할 스타일
-                </h3>
-                <ul className="list-disc list-inside space-y-2 text-gray-600 ml-2">
-                  {report.avoid.map((a, i) => <li key={i}>{a}</li>)}
-                </ul>
-              </section>
-
-              {/* 코디 팁 */}
-              <section>
-                <h3 className="flex items-center gap-2 text-lg font-bold text-gray-900 mb-4">
-                  <Lightbulb className="text-yellow-500" size={22} /> 5. 스타일링 팁
-                </h3>
-                <div className="space-y-3">
-                  {report.tips.map((t, i) => (
-                    <p key={i} className="text-gray-700 flex gap-2">
-                      <span className="text-yellow-500">•</span> {t}
-                    </p>
                   ))}
                 </div>
               </section>
 
               <button 
                 onClick={reset}
-                className="w-full mt-8 py-4 bg-gray-900 text-white font-bold rounded-2xl flex items-center justify-center gap-2 hover:bg-black transition-all shadow-lg"
+                className="w-full mt-8 py-5 bg-white text-black font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-200 transition-all shadow-xl"
               >
-                <RefreshCw size={20} /> 분석 다시 하기
+                <RefreshCw size={20} /> New Analysis
               </button>
             </div>
           </div>
-        </div>
+        </main>
+        <BottomNav />
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-        <div className="bg-blue-600 p-10 text-white text-center">
-          <h1 className="text-3xl font-extrabold mb-3 tracking-tight">AI Personal Stylist</h1>
-          <p className="text-blue-100 font-medium text-sm leading-relaxed">당신의 체형과 컬러를 분석하여<br/>최적의 스타일을 찾아드립니다.</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-8 space-y-8">
-          {/* Photo Upload */}
-          <div>
-            <label className="block text-sm font-bold text-gray-800 mb-3">
-              전신 사진 업로드 (선택사항)
-            </label>
-            <div 
-              className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer transition-all group ${
-                isDragging 
-                  ? "border-blue-500 bg-blue-50 scale-[1.02]" 
-                  : "border-gray-200 hover:bg-gray-50 hover:border-blue-400"
-              }`}
-              onClick={() => fileInputRef.current?.click()}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleFileChange} 
-                accept="image/*" 
-                className="hidden" 
-              />
-              {photoUrl ? (
-                <div className="relative h-64 w-full">
-                  <img src={photoUrl} alt="Preview" className="h-full w-full object-contain rounded-xl" />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
-                    <span className="text-white font-semibold flex items-center gap-2">
-                      <Camera size={20}/> 사진 변경
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <div className="py-10 flex flex-col items-center justify-center">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all ${
-                    isDragging ? "bg-blue-500 text-white scale-110" : "bg-blue-50 text-blue-500 group-hover:scale-110"
-                  }`}>
-                    <Upload size={32} />
-                  </div>
-                  <p className="text-base font-bold text-gray-700">
-                    {isDragging ? "여기에 놓으세요!" : "사진을 업로드하거나 드래그하세요"}
-                  </p>
-                  <p className="text-xs mt-2 text-gray-400">정면 전신 사진이 가장 정확합니다</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Height & Weight */}
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label className="flex items-center gap-1.5 text-sm font-bold text-gray-800 mb-2">
-                <Ruler size={18} className="text-blue-500"/> 키 (cm)
-              </label>
-              <div className="relative">
-                <input 
-                  type="number" 
-                  value={height}
-                  onChange={(e) => setHeight(e.target.value)}
-                  placeholder="예: 185"
-                  className="w-full border border-gray-200 rounded-xl pl-4 pr-10 py-3.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold transition-all"
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="flex items-center gap-1.5 text-sm font-bold text-gray-800 mb-2">
-                <Weight size={18} className="text-blue-500"/> 몸무게 (kg)
-              </label>
-              <div className="relative">
-                <input 
-                  type="number" 
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  placeholder="예: 80"
-                  className="w-full border border-gray-200 rounded-xl pl-4 pr-10 py-3.5 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold transition-all"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <button 
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-blue-200"
-          >
-            무료 스타일 분석 시작 <ArrowRight size={20} />
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+  return null;
 }
