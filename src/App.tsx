@@ -78,16 +78,19 @@ export default function App() {
 
       const response = await fetch('/api/analyze', {
         method: 'POST',
-        body: formData, // JSON 대신 FormData 전송
+        body: formData,
       });
 
-      if (!response.ok) throw new Error('분석에 실패했습니다.');
-
       const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || '분석에 실패했습니다.');
+      }
+
       setReport(result);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      alert(`분석 오류: ${error.message}`);
     } finally {
       setIsAnalyzing(false);
     }
