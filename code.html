@@ -1,0 +1,164 @@
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Stylist Landing Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Header -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 justify-between sticky top-0 z-50 border-b border-primary/10">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">AI Stylist</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-full size-10 bg-primary/10 text-primary">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto">
+<!-- Hero Section -->
+<section class="@container">
+<div class="flex flex-col gap-6 px-4 py-8 @[480px]:gap-10 @[864px]:flex-row @[864px]:items-center">
+<div class="w-full bg-center bg-no-repeat aspect-[4/5] bg-cover rounded-xl shadow-2xl shadow-primary/20" data-alt="High fashion model in minimalist elegant outfit" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkgoF151LeBtIpFWomJprgWUmsWgpur0_OqA6JKUItzH7mzfw9t4_wZ6hlIRM5xchGyG2LGFQXPDYW9mAkpv-Zd5jGx8IotVEJ17sAyBxIavp3yk1_1LSG6ymHLs2PEtUjUbiBEs_ClxTYxR_-DpPuLmapxvRAFA7UZS-7AgF0yJMoe22NM2yswNkEaVtf-GNRtzDp27XeHmOs7885eHTdcAf6n2xfUQmGWbOc9fSypV5hFNJssWNGLvLkTnrDswJoUE4Qn7yFIhk");'>
+</div>
+<div class="flex flex-col gap-6 @[480px]:gap-8 @[864px]:flex-1">
+<div class="flex flex-col gap-3 text-left">
+<span class="text-primary font-bold tracking-widest text-xs uppercase">Curated by Intelligence</span>
+<h1 class="text-slate-900 dark:text-slate-100 text-4xl font-extrabold leading-[1.1] tracking-tight @[480px]:text-5xl">
+                            Your AI Personal <span class="text-primary">Stylist</span>
+</h1>
+<p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-relaxed @[480px]:text-lg">
+                            Elevate your wardrobe with personalized body analysis and style recommendations tailored just for your silhouette.
+                        </p>
+</div>
+<button class="flex w-full @[480px]:w-max cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-primary text-white text-base font-bold leading-normal tracking-wide shadow-lg shadow-primary/30 active:scale-95 transition-transform">
+<span>Get Started</span>
+</button>
+</div>
+</div>
+</section>
+<!-- How it Works Section -->
+<section class="px-4 py-12">
+<div class="flex flex-col gap-2 mb-8">
+<h2 class="text-slate-900 dark:text-slate-100 text-2xl font-bold leading-tight tracking-tight">The Experience</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Three steps to your perfect look</p>
+</div>
+<div class="flex flex-col gap-0 relative">
+<!-- Step 1 -->
+<div class="grid grid-cols-[48px_1fr] gap-x-4">
+<div class="flex flex-col items-center">
+<div class="size-10 rounded-full bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center z-10 border border-primary/20">
+<span class="material-symbols-outlined text-xl">straighten</span>
+</div>
+<div class="w-[2px] bg-primary/10 dark:bg-primary/20 flex-1 min-h-[40px]"></div>
+</div>
+<div class="flex flex-col pb-10 pt-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Input Body Data</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1 leading-relaxed">Simply enter your height and weight for accurate base measurements.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="grid grid-cols-[48px_1fr] gap-x-4">
+<div class="flex flex-col items-center">
+<div class="size-10 rounded-full bg-primary/10 dark:bg-primary/20 text-primary flex items-center justify-center z-10 border border-primary/20">
+<span class="material-symbols-outlined text-xl">add_a_photo</span>
+</div>
+<div class="w-[2px] bg-primary/10 dark:bg-primary/20 flex-1 min-h-[40px]"></div>
+</div>
+<div class="flex flex-col pb-10 pt-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Upload Photo</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1 leading-relaxed">Provide a full-body photo to let our AI analyze your unique proportions.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="grid grid-cols-[48px_1fr] gap-x-4">
+<div class="flex flex-col items-center">
+<div class="size-10 rounded-full bg-primary text-white flex items-center justify-center z-10 shadow-md shadow-primary/20">
+<span class="material-symbols-outlined text-xl">auto_awesome</span>
+</div>
+<div class="w-[2px] h-4 bg-transparent"></div>
+</div>
+<div class="flex flex-col pt-1">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Get AI Styling</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1 leading-relaxed">Receive instant, curated fashion guides designed specifically for you.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Inspiration Section -->
+<section class="px-4 py-8 mb-20">
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold mb-6">Trending Styles</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-[3/4] rounded-xl overflow-hidden relative group" data-alt="Minimalist beige aesthetic clothing items" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBdcUHjl6Ya6BAvdhmHGnRHPHkKNwg_EWyQMfIrpd2A9MthjlMlvk2naEzDNL1-F-n41QU-Zs1C-8zJT-U9-WrjrXIeIxg2DpYL413bY82WIq1HPFL4OdkMDoD00WejUzhK05y7xXuLu3gFVG-qp_zDvspaJ5XywTPNDSsVScaprfdcJp8xOwofXcoWKDvfxqqjVfXFjbivzBVSQvJIRt5pERARcmA-SKnm0-OPyFguuJOBZIPE8OdNwbcTzfJgbVgCqCIfVMWJP-E'); background-size: cover;">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<span class="text-white text-xs font-semibold">Minimalist</span>
+</div>
+</div>
+<div class="aspect-[3/4] rounded-xl overflow-hidden relative group" data-alt="Modern streetwear fashion ensemble" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_8EVU2cw03zITgKWSS3cVlurq8M-Pr1e7VwQl-ugpo7Zed3WzrxuxFrPp4DY8zAYmJ9HMyUhAEO2-cov6Y2fi3Poo9vHcnkDSAWREY2kRQkDgI-9QopVXxSwwR8Wui5gcE6Gk2lT5nx3H6fx0fJzBYunZdYrn6IByM1v_s405oBbFLWU-h3pEtihK8m7YpDVlMkZblwErHNq3HPCjMVbynlR4iRc8VQUMAEpkXRdH2UJGrLnUsRvoY5xWEmhjtahMA_4t-ADQqwA'); background-size: cover;">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<span class="text-white text-xs font-semibold">Contemporary</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-lg border-t border-primary/10 px-6 py-2 pb-6 z-50">
+<div class="flex justify-between items-center max-w-lg mx-auto">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">style</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Looks</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">camera_enhance</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Scan</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">shopping_bag</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Shop</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

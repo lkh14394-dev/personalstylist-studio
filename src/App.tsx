@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { 
-  Upload, Camera, Ruler, Weight, ArrowRight, 
-  User, Palette, CheckCircle, XCircle, Lightbulb,
+  Upload, Camera, Ruler, ArrowRight, 
+  User, Palette, CheckCircle,
   RefreshCw, ChevronLeft, Scissors, Home, Layout, 
   Camera as CameraIcon, ShoppingBag, User as UserIcon,
   Menu, Zap
@@ -116,7 +116,7 @@ export default function App() {
       <div className="text-[#7f13ec] flex size-10 shrink-0 items-center justify-center">
         <Menu size={24} />
       </div>
-      <h2 className="text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">AI Stylist</h2>
+      <h2 className="text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">AI 스타일리스트</h2>
       <div className="flex w-10 items-center justify-end">
         <button className="flex cursor-pointer items-center justify-center rounded-full size-10 bg-[#7f13ec]/10 text-[#7f13ec]">
           <UserIcon size={20} />
@@ -130,23 +130,23 @@ export default function App() {
       <div className="flex justify-between items-center max-w-lg mx-auto">
         <button onClick={() => setView('landing')} className={`flex flex-col items-center gap-1 ${view === 'landing' ? 'text-[#7f13ec]' : 'text-slate-500'}`}>
           <Home size={24} fill={view === 'landing' ? 'currentColor' : 'none'} />
-          <span className="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+          <span className="text-[10px] font-bold tracking-tighter">홈</span>
         </button>
         <button className="flex flex-col items-center gap-1 text-slate-500">
           <Layout size={24} />
-          <span className="text-[10px] font-bold uppercase tracking-tighter">Looks</span>
+          <span className="text-[10px] font-bold tracking-tighter">룩북</span>
         </button>
         <button onClick={() => setView('form')} className={`flex flex-col items-center gap-1 ${view === 'form' || view === 'report' ? 'text-[#7f13ec]' : 'text-slate-500'}`}>
           <CameraIcon size={24} fill={view === 'form' || view === 'report' ? 'currentColor' : 'none'} />
-          <span className="text-[10px] font-bold uppercase tracking-tighter">Scan</span>
+          <span className="text-[10px] font-bold tracking-tighter">스캔</span>
         </button>
         <button className="flex flex-col items-center gap-1 text-slate-500">
           <ShoppingBag size={24} />
-          <span className="text-[10px] font-bold uppercase tracking-tighter">Shop</span>
+          <span className="text-[10px] font-bold tracking-tighter">쇼핑</span>
         </button>
         <button className="flex flex-col items-center gap-1 text-slate-500">
           <UserIcon size={24} />
-          <span className="text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+          <span className="text-[10px] font-bold tracking-tighter">프로필</span>
         </button>
       </div>
     </nav>
@@ -164,19 +164,19 @@ export default function App() {
             </div>
             <div className="flex flex-col gap-6 md:w-1/2">
               <div className="flex flex-col gap-3">
-                <span className="text-[#7f13ec] font-bold tracking-widest text-xs uppercase">Curated by Intelligence</span>
+                <span className="text-[#7f13ec] font-bold tracking-widest text-xs uppercase">지능형 큐레이션</span>
                 <h1 className="text-4xl md:text-6xl font-extrabold leading-[1.1] tracking-tight">
-                  Your AI Personal <span className="text-[#7f13ec]">Stylist</span>
+                  나만의 AI 퍼스널 <span className="text-[#7f13ec]">스타일리스트</span>
                 </h1>
                 <p className="text-slate-400 text-lg leading-relaxed max-w-md">
-                  Elevate your wardrobe with personalized body analysis and style recommendations tailored just for your silhouette.
+                  당신의 신체 비율과 실루엣에 맞춘 퍼스널 체형 분석과 스타일 추천으로 옷장을 새롭게 정의하세요.
                 </p>
               </div>
               <button 
                 onClick={() => setView('form')}
                 className="flex w-full md:w-max cursor-pointer items-center justify-center rounded-full h-16 px-10 bg-[#7f13ec] text-white text-lg font-bold shadow-lg shadow-purple-500/30 active:scale-95 transition-all"
               >
-                Get Started
+                시작하기
               </button>
             </div>
           </section>
@@ -184,14 +184,14 @@ export default function App() {
           {/* The Experience */}
           <section className="px-4 py-12 md:px-12">
             <div className="flex flex-col gap-2 mb-10">
-              <h2 className="text-2xl font-bold">The Experience</h2>
-              <p className="text-slate-500 text-sm">Three steps to your perfect look</p>
+              <h2 className="text-2xl font-bold">서비스 경험</h2>
+              <p className="text-slate-500 text-sm">완벽한 룩을 위한 3단계 과정</p>
             </div>
             <div className="space-y-0 relative">
               {[
-                { icon: <Ruler size={20} />, title: "Input Body Data", desc: "Simply enter your height and weight for accurate base measurements." },
-                { icon: <CameraIcon size={20} />, title: "Upload Photo", desc: "Provide a full-body photo to let our AI analyze your unique proportions." },
-                { icon: <Zap size={20} className="fill-white" />, title: "Get AI Styling", desc: "Receive instant, curated fashion guides designed specifically for you.", highlight: true }
+                { icon: <Ruler size={20} />, title: "신체 데이터 입력", desc: "정확한 분석을 위해 키와 몸무게 정보를 입력합니다." },
+                { icon: <CameraIcon size={20} />, title: "사진 업로드", desc: "전신 사진을 통해 AI가 당신만의 고유한 비율을 분석합니다." },
+                { icon: <Zap size={20} className="fill-white" />, title: "AI 스타일 추천", desc: "당신만을 위해 큐레이션된 맞춤형 패션 가이드를 즉시 확인하세요.", highlight: true }
               ].map((step, i, arr) => (
                 <div key={i} className="flex gap-4">
                   <div className="flex flex-col items-center">
@@ -223,13 +223,13 @@ export default function App() {
         <main className="flex-1 p-4 md:p-12 flex flex-col items-center justify-center">
           <div className="max-w-md w-full bg-white/5 rounded-3xl shadow-2xl overflow-hidden border border-purple-500/10">
             <div className="bg-[#7f13ec] p-10 text-white text-center">
-              <h1 className="text-2xl font-extrabold mb-2 tracking-tight">Style Analysis</h1>
+              <h1 className="text-2xl font-extrabold mb-2 tracking-tight">스타일 분석</h1>
               <p className="text-purple-100 font-medium text-sm opacity-90">당신의 신체 데이터와 사진을 분석합니다.</p>
             </div>
 
             <form onSubmit={handleSubmit} className="p-8 space-y-8">
               <div>
-                <label className="block text-sm font-bold text-slate-300 mb-3 uppercase tracking-wider">Photo Upload</label>
+                <label className="block text-sm font-bold text-slate-300 mb-3 uppercase tracking-wider">사진 업로드</label>
                 <div 
                   className={`border-2 border-dashed rounded-2xl p-4 text-center cursor-pointer transition-all group ${
                     isDragging ? "border-[#7f13ec] bg-[#7f13ec]/10 scale-[1.02]" : "border-white/10 hover:bg-white/5 hover:border-[#7f13ec]"
@@ -242,7 +242,7 @@ export default function App() {
                   <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
                   {photoUrl ? (
                     <div className="relative h-64 w-full">
-                      <img src={photoUrl} alt="Preview" className="h-full w-full object-contain rounded-xl" />
+                      <img src={photoUrl} alt="미리보기" className="h-full w-full object-contain rounded-xl" />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-xl">
                         <span className="text-white font-semibold flex items-center gap-2"><Camera size={20}/> 사진 변경</span>
                       </div>
@@ -252,8 +252,8 @@ export default function App() {
                       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all ${isDragging ? "bg-[#7f13ec] text-white" : "bg-[#7f13ec]/10 text-[#7f13ec]"}`}>
                         <Upload size={32} />
                       </div>
-                      <p className="text-base font-bold text-slate-300">Drag or click to upload</p>
-                      <p className="text-xs mt-2 text-slate-500 font-medium">전신 사진이 가장 좋습니다.</p>
+                      <p className="text-base font-bold text-slate-300">사진을 끌어다 놓거나 클릭하여 업로드</p>
+                      <p className="text-xs mt-2 text-slate-500 font-medium">전신 사진이 가장 정확한 결과를 제공합니다.</p>
                     </div>
                   )}
                 </div>
@@ -261,11 +261,11 @@ export default function App() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="flex items-center gap-1.5 text-sm font-bold text-slate-300 mb-2 uppercase tracking-wider">Height (cm)</label>
+                  <label className="flex items-center gap-1.5 text-sm font-bold text-slate-300 mb-2 uppercase tracking-wider">키 (cm)</label>
                   <input type="number" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="185" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-[#7f13ec] font-bold text-lg transition-all" required />
                 </div>
                 <div>
-                  <label className="flex items-center gap-1.5 text-sm font-bold text-slate-300 mb-2 uppercase tracking-wider">Weight (kg)</label>
+                  <label className="flex items-center gap-1.5 text-sm font-bold text-slate-300 mb-2 uppercase tracking-wider">몸무게 (kg)</label>
                   <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} placeholder="80" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-[#7f13ec] font-bold text-lg transition-all" required />
                 </div>
               </div>
@@ -290,8 +290,8 @@ export default function App() {
             <Zap className="text-[#7f13ec] animate-pulse" size={32} fill="currentColor" />
           </div>
         </div>
-        <h2 className="mt-8 text-2xl font-bold text-white">AI Analyzing...</h2>
-        <p className="mt-2 text-slate-500 text-center font-medium">당신의 유니크한 스타일을 <br/>찾아내고 있습니다.</p>
+        <h2 className="mt-8 text-2xl font-bold text-white">AI 분석 중...</h2>
+        <p className="mt-2 text-slate-500 text-center font-medium">당신만의 유니크한 스타일을 <br/>찾고 있습니다. 잠시만 기다려주세요.</p>
       </div>
     );
   }
@@ -305,30 +305,30 @@ export default function App() {
             onClick={() => setView('form')}
             className="mb-6 flex items-center text-slate-500 hover:text-white transition-colors font-bold uppercase tracking-tighter text-xs"
           >
-            <ChevronLeft size={18} /> Back to scan
+            <ChevronLeft size={18} /> 분석 폼으로 돌아가기
           </button>
 
           <div className="bg-white/5 rounded-[2rem] shadow-2xl overflow-hidden border border-purple-500/10">
             <div className="bg-gradient-to-r from-[#7f13ec] to-[#4c0b8e] p-10 text-white">
-              <span className="bg-white/20 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">Analysis Complete</span>
-              <h1 className="text-3xl font-black mt-4 tracking-tight">Style Analysis Report</h1>
+              <span className="bg-white/20 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">분석 완료</span>
+              <h1 className="text-3xl font-black mt-4 tracking-tight">스타일 분석 보고서</h1>
             </div>
 
             <div className="p-8 space-y-12">
               {report.hairImageUrl && (
                 <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-6 uppercase tracking-wider">
-                    <Scissors className="text-indigo-500" size={22} /> Recommended Hair
+                    <Scissors className="text-indigo-500" size={22} /> 추천 헤어스타일
                   </h3>
                   <div className="bg-black/40 rounded-3xl overflow-hidden border border-white/5 p-1 shadow-inner">
-                    <img src={report.hairImageUrl} alt="Hairstyle Grid" className="w-full h-auto rounded-2xl" />
+                    <img src={report.hairImageUrl} alt="추천 헤어스타일" className="w-full h-auto rounded-2xl" />
                   </div>
                 </section>
               )}
 
               <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-4 uppercase tracking-wider">
-                  <User className="text-[#7f13ec]" size={22} /> 1. Body Analysis
+                  <User className="text-[#7f13ec]" size={22} /> 1. 체형 분석
                 </h3>
                 <div className="bg-[#7f13ec]/5 rounded-2xl p-6 text-slate-300 leading-relaxed border border-purple-500/10">
                   {report.body}
@@ -337,7 +337,7 @@ export default function App() {
 
               <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
                 <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-4 uppercase tracking-wider">
-                  <Palette className="text-pink-500" size={22} /> 2. Personal Color
+                  <Palette className="text-pink-500" size={22} /> 2. 퍼스널 컬러
                 </h3>
                 <div className="bg-pink-500/5 rounded-2xl p-6 text-slate-300 leading-relaxed border border-pink-500/10">
                   {report.color}
@@ -346,7 +346,7 @@ export default function App() {
 
               <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
                 <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-6 uppercase tracking-wider">
-                  <CheckCircle className="text-green-500" size={22} /> 3. Must-have Items
+                  <CheckCircle className="text-green-500" size={22} /> 3. 머스트 해브 아이템
                 </h3>
                 <div className="grid gap-4">
                   {report.styles.map((s, i) => (
@@ -362,7 +362,7 @@ export default function App() {
                 onClick={reset}
                 className="w-full mt-8 py-5 bg-white text-black font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-200 transition-all shadow-xl"
               >
-                <RefreshCw size={20} /> New Analysis
+                <RefreshCw size={20} /> 새로운 분석 시작하기
               </button>
             </div>
           </div>
