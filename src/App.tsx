@@ -56,7 +56,7 @@ export default function App() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!height || !weight) {
       alert("키와 몸무게를 입력해주세요.");
@@ -65,29 +65,27 @@ export default function App() {
 
     setIsAnalyzing(true);
 
-    // AI 분석 시뮬레이션 (2초 후 결과 표시)
-    setTimeout(() => {
-      setReport({
-        body: `${height}cm / ${weight}kg의 수치를 바탕으로 분석한 결과, 균형 잡힌 애슬레틱 체형으로 추정됩니다. 상체 어깨 라인을 살리면서 하체는 스트레이트 핏으로 밸런스를 잡는 것이 베스트입니다.`,
-        color: "사진 분석 결과, 차가운 톤의 실버 액세서리와 네이비, 차콜 컬러가 잘 어울리는 '겨울 쿨톤' 가능성이 높습니다.",
-        styles: [
-          "데일리 미니멀: 싱글 코트, 맥코트, 테이퍼드 슬랙스",
-          "스마트 캐주얼: 싱글 2버튼 블레이저, 독일군 스니커즈",
-          "클래식 무드: 레더 재킷, 다크 워시 스트레이트 데님"
-        ],
-        avoid: [
-          "초슬림 스키니: 다리가 너무 가늘어 보여 비율이 깨질 수 있음",
-          "과도한 드롭숄더: 체격이 둔해 보일 수 있는 위험",
-          "상/하의 모두 과한 오버핏"
-        ],
-        tips: [
-          "바지 기장은 신발 발등에 살짝 닿는 '원 브레이크'가 가장 깔끔합니다.",
-          "어깨선 -> 소매 길이 -> 바지 기장 순으로 수선에 신경 써보세요.",
-          "네이비와 아이보리 조합은 언제나 실패 없는 선택입니다."
-        ]
+    try {
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          height, 
+          weight,
+          photoDescription: photoUrl ? "사용자가 전신 사진을 업로드함" : "" 
+        }),
       });
+
+      if (!response.ok) throw new Error('분석에 실패했습니다.');
+
+      const result = await response.json();
+      setReport(result);
+    } catch (error) {
+      console.error(error);
+      alert("AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    } finally {
       setIsAnalyzing(false);
-    }, 2000);
+    }
   };
 
   const reset = () => {
